@@ -1,0 +1,14 @@
+sample_path: outputs_clean_ablation/rl_best/config_rl_best_20260512_145859
+protein_root: data/PDBbind_v2020
+dataset: pdbbind
+docking_mode: vina_score
+exhaustiveness: 16
+eval_mode: all
+eval_num_examples: null
+verbose: False
+save: True
+
+data:
+  name: protein_ligand
+  path: data/PDBbind_v2020_pocket10
+  split: data/PDBbind_pocket10_split.pt

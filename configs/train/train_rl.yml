@@ -1,0 +1,62 @@
+# configs/train_rl.yml
+# RL Fine-tuning 配置（阶段 2.2）
+
+data:
+  dataset: pdbbind
+  data_path: data/PDBbind_v2020_pocket10_processed_v2.lmdb
+  split: data/split_by_name.pt
+
+model:
+  # 从 ms_full v2 ckpt 加载
+  config_path: configs/model/diffgui.yml
+  
+  use_multiscale: true
+  ms_num_layers: 4
+  ms_hidden_dim: 128
+  
+  gen_mode: denovo  # RL 阶段用 denovo
+  center_pos_mode: protein
+
+train:
+  prev_model: true
+  # 从阶段 1.3 重训后的 ms_full v2 加载
+  prev_ckpt: ablation_results/ms_full_v2/finetuned_final.pt
+  
+  logdir: logs/rl_finetune
+
+rl:
+  # ============ RL 核心参数 ============
+  batch_size: 8          # 每 iter 生成 8 个分子
+  max_iters: 1500        # 总 iter 数（约 25-35 小时 GPU）
+  lr: 1e-5               # 学习率（比 pretrain 低 10×）
+  temp: 0.5              # reward weighting temperature
+  
+  # ============ Reward function ============
+  reward_temp: 0.5       # MultiObjectiveRewardV2 的 temperature
+  
+  # ============ Pocket rotation ============
+  num_train_pockets: 100  # 从 train set 抽多少个 pocket 做 pool
+  
+  # ============ Logging & Checkpointing ============
+  log_freq: 10           # 每 10 iter log
+  save_freq: 100         # 每 100 iter save ckpt
+
+sample:
+  # Generation 参数（用于每次 RL step 的生成）
+  num_steps: 1000
+  gui_strength: 3.0
+  sample_temp: 1.0
+  center_pos_mode: protein
+  
+  # MS at inference
+  use_ms_at_inference: true
+  ms_apply_threshold: 200
+
+surrogate:
+  # Surrogate model 配置（用于 reward 计算）
+  # 假设和训练时一致
+  hidden_dim: 128
+  num_layers: 4
+
+seed: 2024
+device: cuda:0

@@ -1,0 +1,32 @@
+#sample_path: outputs/sample_20240408_034734
+#verbose: False
+#eval_num_examples: null
+#save: True
+#protein_root: data/PDBbind_v2020
+#dataset: pdbbind # [pdbbind, crossdocked]
+#atom_enc_mode: aromatic
+#docking_mode: vina_score # ['qvina', 'vina_score', 'vina_dock', 'none']
+#eval_mode: all # [bond_only, all]
+#exhaustiveness: 16
+#
+#data:
+#  name: protein_ligand
+#  path: data/PDBbind_v2020_pocket10
+#  split: data/PDBbind_pocket10_split.pt
+#  #path: data/crossdocked_v1.1_rmsd1.0_pocket10
+#  #split: data/crossdocked_pocket10_pose_split.pt
+
+sample_path: outputs_clean_ablation/baseline/config_baseline_20260508_134055   # 指向第2步的输出目录
+protein_root: data/PDBbind_v2020
+dataset: pdbbind
+docking_mode: vina_score    # 或 qvina / vina_dock / none
+exhaustiveness: 16
+eval_mode: all              # all 或 bond_only
+eval_num_examples: null
+verbose: False
+save: True
+
+data:
+  name: protein_ligand
+  path: data/PDBbind_v2020_pocket10
+  split: data/PDBbind_pocket10_split.pt
